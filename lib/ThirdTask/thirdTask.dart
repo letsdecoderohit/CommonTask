@@ -164,8 +164,9 @@ class MyImageView extends StatelessWidget{
     return Stack(
       children: [
         Container(
-          width: double.infinity,
-          height: 300,
+          width: MediaQuery.of(context).size.width * 1.0,
+          height: getProportionateScreenHeight(320),
+          color: Colors.white,
           margin: EdgeInsets.all(10),
           child: GestureDetector(
             onTap: (){
