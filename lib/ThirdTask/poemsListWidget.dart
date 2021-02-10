@@ -18,15 +18,15 @@ class PoemListWidget extends StatelessWidget {
       children: [
         Container(
           width: getProportionateScreenWidth(185),
-          height: getProportionateScreenHeight(250),
+          height: MediaQuery.of(context).size.width * 0.55,
           color: Colors.white,
           child: Stack(
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Container(
-                  height: 160,
-                  width: 160,
+                  height: getProportionateScreenHeight(200),
+                  width: getProportionateScreenHeight(200),
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Image.asset(imageVal, fit: BoxFit.fill,)
@@ -34,11 +34,11 @@ class PoemListWidget extends StatelessWidget {
                 ),
               ),
               Positioned(
-                bottom: 10,
-                left: 48,
+                top: 130,
+                left: 55,
                 child: Container(
-                  height: 85,
-                  width: 85,
+                  height: getProportionateScreenHeight(80),
+                  width: getProportionateScreenHeight(80),
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(40),
                       child: SvgPicture.asset("assets/icons/ic_play.svg",height: 70,width: 70,)),

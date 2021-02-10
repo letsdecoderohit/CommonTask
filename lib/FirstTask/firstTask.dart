@@ -46,7 +46,6 @@ class _FirstTaskState extends State<FirstTask> {
 
 
 
-
   TextEditingController nameTextEditingController = TextEditingController();
   TextEditingController salaryTextEditingController = TextEditingController();
   String name = "";
@@ -73,6 +72,7 @@ class _FirstTaskState extends State<FirstTask> {
               Column(
                 children: [
                   TextFormField(
+                    maxLength: 100,
                       decoration: InputDecoration(
                           labelText: "Name",
                           labelStyle: TextStyle(fontSize: 14.0,),
@@ -159,9 +159,10 @@ class _FirstTaskState extends State<FirstTask> {
                             lastDate: DateTime.now());
                         final df = new DateFormat('dd-MMM-yyyy');
                         this.birthDate = df.format(birthDate);
-                        this.age = calculateAge(birthDate);
 
-                        setState(() {});
+                        setState(() {
+                          this.age = calculateAge(birthDate);
+                        });
                       },
                       child: Container(
                           padding: EdgeInsets.all(12),
@@ -179,10 +180,51 @@ class _FirstTaskState extends State<FirstTask> {
                 splashColor: Colors.blue.shade300,
                 onPressed: () async{
                   final String salary = salaryTextEditingController.text.toString();
+                  final String name = nameTextEditingController.text.toString();
 
-                  validateFields(salary);
+                  if(name.isEmpty){
+                    setState(() {
+                      nameNullError = "Please Enter your Name";
+                    });
+                    salaryNullError = "";
+                    birthDateNullError = "";
 
-                  resetApp(salary);
+                  }
+                  else if(salary.isEmpty){
+                    setState(() {
+                      salaryNullError = "Please Enter your Salary";
+                    });
+                    nameNullError = "";
+                    birthDateNullError = "";
+
+                  }
+                  else if(age == -1){
+                    setState(() {
+                      birthDateNullError = "Please Select your Birthdate";
+                    });
+                    nameNullError = "";
+                    salaryNullError = "";
+
+                  }
+                  else{
+                    showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext){
+                          return ProgressDialog(message: "Regestering Please Wait...",);
+                        }
+                    );
+
+                    final CreatePost user = await createUser(name, salary, age.toString());
+                    setState(() {
+                      _createPost = user;
+                    });
+
+                    Navigator.pop(context);
+
+                  }
+
+
 
 
                 },
@@ -215,54 +257,14 @@ class _FirstTaskState extends State<FirstTask> {
   }
 
   void validateFields(String salary) async{
-    if(name.isEmpty){
-      setState(() {
-        nameNullError = "Please Enter your Name";
-      });
-      salaryNullError = "";
-      birthDateNullError = "";
 
-    }else if(salary.isEmpty){
-      setState(() {
-        salaryNullError = "Please Enter your Salary";
-      });
-      nameNullError = "";
-      birthDateNullError = "";
-
-    }else if(age == -1){
-      setState(() {
-        birthDateNullError = "Please Select your Birthdate";
-      });
-      nameNullError = "";
-      salaryNullError = "";
-
-    }
-    else{
-      showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext){
-            return ProgressDialog(message: "Regestering Please Wait...",);
-          }
-      );
-
-      final CreatePost user = await createUser(name, salary, age.toString());
-      setState(() {
-        _createPost = user;
-      });
-
-      Navigator.pop(context);
-
-
-    }
   }
 
-  resetApp(String salary){
+  resetApp(){
     setState(() {
       nameTextEditingController.text = "";
       salaryTextEditingController.text = "";
       name = "";
-      salary = "";
       birthDate= "";
       age = -1;
     });

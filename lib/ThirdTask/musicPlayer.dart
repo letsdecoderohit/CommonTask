@@ -1,5 +1,4 @@
 import 'package:apidemo_app/ThirdTask/poemsListWidget.dart';
-import 'package:apidemo_app/ThirdTask/relatedPost.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,7 +27,8 @@ class MusicPlayer extends StatelessWidget {
             children: [
               Container(
                 width: double.infinity,
-                height: getProportionateScreenHeight(300),
+                height: getProportionateScreenHeight(280),
+                color: Colors.white,
                 child: Stack(
                   children: [
                     Container(
@@ -36,7 +36,7 @@ class MusicPlayer extends StatelessWidget {
                         child: Image.asset(imgPath,fit: BoxFit.fill,)
                     ),
                     Positioned(
-                      bottom: 0,
+                      top: getProportionateScreenHeight(180),
                       left: 0,
                       right: 0,
                       child: Container(
@@ -59,7 +59,7 @@ class MusicPlayer extends StatelessWidget {
               ),
               Container(
                 width: double.infinity,
-                height: getProportionateScreenHeight(360),
+                height: getProportionateScreenHeight(340),
                 child: Column(
                   children: [
                     Container(
