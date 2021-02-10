@@ -1,6 +1,12 @@
 # apidemo_app
 
-A Basic Api application.
+A Common task Application.
+
+i. Create a form with below fields:
+ii. Fetch response from the below API and show it in a list view.
+iii. Design the below screen which can work in all mobile resolutions. 
+
+
 
 ## Getting Started
 
