@@ -45,6 +45,8 @@ class _FirstTaskState extends State<FirstTask> {
   String birthDateNullError= "";
 
 
+
+
   TextEditingController nameTextEditingController = TextEditingController();
   TextEditingController salaryTextEditingController = TextEditingController();
   String name = "";
@@ -178,43 +180,9 @@ class _FirstTaskState extends State<FirstTask> {
                 onPressed: () async{
                   final String salary = salaryTextEditingController.text.toString();
 
-                  if(name.isEmpty){
-                    setState(() {
-                      nameNullError = "Please Enter your Name";
-                    });
-                    salaryNullError = "";
-                    birthDateNullError = "";
+                  validateFields(salary);
 
-                  }else if(salary.isEmpty){
-                    setState(() {
-                      salaryNullError = "Please Enter your Salary";
-                  });
-                    nameNullError = "";
-                    birthDateNullError = "";
-
-                  }else if(birthDate.isEmpty){
-                    setState(() {
-                      birthDateNullError = "Please Select your Birthdate";
-                    });
-                    nameNullError = "";
-                    salaryNullError = "";
-
-                  }
-                  else if(name.isNotEmpty && salary.isNotEmpty && birthDate.isNotEmpty){
-                    showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (BuildContext){
-                          return ProgressDialog(message: "Regestering Please Wait...",);
-                        }
-                    );
-
-                    final CreatePost user = await createUser(name, salary, age.toString());
-                    setState(() {
-                      _createPost = user;
-                    });
-                    Navigator.pop(context);
-                  }
+                  resetApp(salary);
 
 
                 },
@@ -233,9 +201,10 @@ class _FirstTaskState extends State<FirstTask> {
                   : Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Text("message:- ${_createPost.message} \n id:-${_createPost.data.id} ",
-                style: GoogleFonts.poppins(fontSize: 18),),
+                child: Text("message:- ${_createPost.message} \n id:-${_createPost.data.id} ", style: GoogleFonts.poppins(fontSize: 18),),
               )
+
+
 
             ],
           ),
@@ -243,6 +212,61 @@ class _FirstTaskState extends State<FirstTask> {
       ),
 
     );
+  }
+
+  void validateFields(String salary) async{
+    if(name.isEmpty){
+      setState(() {
+        nameNullError = "Please Enter your Name";
+      });
+      salaryNullError = "";
+      birthDateNullError = "";
+
+    }else if(salary.isEmpty){
+      setState(() {
+        salaryNullError = "Please Enter your Salary";
+      });
+      nameNullError = "";
+      birthDateNullError = "";
+
+    }else if(age == -1){
+      setState(() {
+        birthDateNullError = "Please Select your Birthdate";
+      });
+      nameNullError = "";
+      salaryNullError = "";
+
+    }
+    else{
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext){
+            return ProgressDialog(message: "Regestering Please Wait...",);
+          }
+      );
+
+      final CreatePost user = await createUser(name, salary, age.toString());
+      setState(() {
+        _createPost = user;
+      });
+
+      Navigator.pop(context);
+
+
+    }
+  }
+
+  resetApp(String salary){
+    setState(() {
+      nameTextEditingController.text = "";
+      salaryTextEditingController.text = "";
+      name = "";
+      salary = "";
+      birthDate= "";
+      age = -1;
+    });
+
   }
 
   calculateAge(DateTime birthDate) {
